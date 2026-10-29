@@ -18,18 +18,24 @@ const ARCHIVO = path.resolve(__dirname, '..', '..', 'data', 'coordenadas-ciudade
 const NOMINATIM = 'https://nominatim.openstreetmap.org/search'
 const IDENTIFICACION = 'metricas-dipec/1.0 (tablero de métricas de dipec.jujuy.gob.ar)'
 
-// null = se buscó y no se encontró (no se vuelve a buscar mientras el servidor siga andando).
-// Al reiniciar se descartan los null, así se reintentan.
+// null = se buscó y OpenStreetMap no la conoce (por ejemplo, un código postal): no se vuelve a buscar.
+// Para reintentar una, borrar su línea del archivo.
 let guardadas: Record<string, Coordenadas | null> = {}
 try {
-  const archivo = JSON.parse(fs.readFileSync(ARCHIVO, 'utf8')) as Record<string, Coordenadas | null>
-  guardadas = Object.fromEntries(Object.entries(archivo).filter(([, v]) => v !== null))
+  guardadas = JSON.parse(fs.readFileSync(ARCHIVO, 'utf8')) as Record<string, Coordenadas | null>
 } catch {
   /* todavía no hay archivo */
 }
 
 const pendientes = new Map<string, { ciudad: string; region: string; pais: string }>()
 let buscando = false
+
+// Si una búsqueda falla (Nominatim caído o "demasiadas consultas"), esa ciudad espera un rato
+// antes de reintentarse; y ante un 429 se pausan todas, para no terminar bloqueados.
+const ESPERA_SI_FALLA = 60 * 60 * 1000 // 1 hora
+const PAUSA_POR_429 = 15 * 60 * 1000 // 15 minutos
+const reintentarDesde = new Map<string, number>()
+let pausaHasta = 0
 
 const clave = (ciudad: string, region: string, pais: string) => `${ciudad}|${region}|${pais}`.toLowerCase()
 
@@ -48,6 +54,7 @@ async function consultarOSM(params: Record<string, string>): Promise<Coordenadas
   const res = await fetch(`${NOMINATIM}?${new URLSearchParams({ ...params, format: 'json', limit: '1' })}`, {
     headers: { 'User-Agent': IDENTIFICACION, 'Accept-Language': 'es' },
   })
+  if (res.status === 429) pausaHasta = Date.now() + PAUSA_POR_429
   if (!res.ok) throw new Error(`Nominatim respondió ${res.status}`)
   const [lugar] = (await res.json()) as { lat: string; lon: string }[]
   return lugar ? { lat: Number(lugar.lat), lng: Number(lugar.lon) } : null
@@ -73,11 +80,15 @@ async function procesarPendientes() {
   buscando = true
   try {
     for (const [k, c] of pendientes) {
+      if (Date.now() < pausaHasta) break // las que quedan se buscan después de la pausa
       try {
         guardadas[k] = await buscarEnOSM(c.ciudad, c.region, c.pais)
+        reintentarDesde.delete(k)
         guardar()
       } catch (error) {
-        console.warn(`[mapa] No se pudo ubicar ${c.ciudad}:`, error instanceof Error ? error.message : error)
+        reintentarDesde.set(k, Date.now() + ESPERA_SI_FALLA)
+        const pausa = Date.now() < pausaHasta ? ' (se pausan las búsquedas 15 minutos)' : ' (se reintenta en 1 hora)'
+        console.warn(`[mapa] No se pudo ubicar ${c.ciudad}: ${error instanceof Error ? error.message : error}${pausa}`)
       }
       pendientes.delete(k)
       await new Promise((r) => setTimeout(r, 1100))
@@ -94,7 +105,9 @@ async function procesarPendientes() {
 export function ubicacionDe(ciudad: string, region: string, pais: string): { estado: 'ok' | 'buscando' | 'no-existe'; coords: Coordenadas | null } {
   const k = clave(ciudad, region, pais)
   if (k in guardadas) return { estado: guardadas[k] ? 'ok' : 'no-existe', coords: guardadas[k] }
+  // Falló hace poco: por ahora sin ubicación (no se insiste)
+  if ((reintentarDesde.get(k) ?? 0) > Date.now()) return { estado: 'no-existe', coords: null }
   if (!pendientes.has(k)) pendientes.set(k, { ciudad, region, pais })
-  void procesarPendientes()
+  if (Date.now() >= pausaHasta) void procesarPendientes()
   return { estado: 'buscando', coords: null }
 }

@@ -11,7 +11,8 @@ const servidor = createServer(app)
 iniciarWebSocket(servidor)
 
 servidor.listen(env.port, () => {
-  console.log(`metricas-dipec-back escuchando en http://localhost:${env.port}`)
+  // En local se muestra la dirección para abrirla; en el servidor, la dirección pública la da el hosting
+  console.log(env.isProduction ? `metricas-dipec-back escuchando en el puerto ${env.port}` : `metricas-dipec-back escuchando en http://localhost:${env.port}`)
 
   // Login: hace falta la clave de las sesiones y la base de datos de usuarios
   if (!secretoValido()) console.error('[login] Falta JWT_SECRET en el .env (una clave aleatoria de 32 caracteres o más). Nadie va a poder ingresar.')

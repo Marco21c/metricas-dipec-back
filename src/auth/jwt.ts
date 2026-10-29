@@ -31,11 +31,13 @@ export const verificarToken = (token: string): DatosToken | null => {
   }
 }
 
-// La cookie no la puede leer JavaScript (httpOnly) y en producción solo viaja por HTTPS
+// La cookie no la puede leer JavaScript (httpOnly) y en producción solo viaja por HTTPS.
+// En producción el tablero y el backend están en dominios distintos (por ejemplo, dos sitios de Render):
+// SameSite=None permite que el navegador la envíe igual (exige Secure). En local alcanza con Lax.
 export const opcionesCookie: CookieOptions = {
   httpOnly: true,
   secure: env.isProduction,
-  sameSite: 'lax',
+  sameSite: env.isProduction ? 'none' : 'lax',
   path: '/',
   maxAge: DURACION_SESION_SEGUNDOS * 1000,
 }
