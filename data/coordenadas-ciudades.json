@@ -283,5 +283,14 @@
   "libertad|buenos aires province|argentina": {
     "lat": -34.7003704,
     "lng": -58.6834869
+  },
+  "beccar|buenos aires province|argentina": {
+    "lat": -34.4635418,
+    "lng": -58.5343404
+  },
+  "castelli partido|buenos aires province|argentina": null,
+  "jose leon suarez|buenos aires province|argentina": {
+    "lat": -34.5283329,
+    "lng": -58.5771687
   }
 }

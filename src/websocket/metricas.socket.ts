@@ -2,7 +2,7 @@ import type { Server as HttpServer } from 'node:http'
 import { Server } from 'socket.io'
 import type { Socket } from 'socket.io'
 import { NOMBRE_COOKIE, leerCookie } from '../auth/jwt'
-import { corsOptions } from '../config/cors'
+import { corsOptions, origenesPermitidos } from '../config/cors'
 import { PERIODOS_VALIDOS } from '../interfaces/metricas.interface'
 import type { DiasPeriodo, ResumenMetricas } from '../interfaces/metricas.interface'
 import { obtenerEnVivoService, obtenerResumenService, validarDias } from '../services/metricas.service'
@@ -24,7 +24,12 @@ const mensajeDeError = (error: unknown) =>
 const huella = (r: ResumenMetricas) => JSON.stringify({ ...r, actualizado: undefined })
 
 export function iniciarWebSocket(servidor: HttpServer) {
-  const io = new Server(servidor, { cors: corsOptions })
+  const io = new Server(servidor, {
+    cors: corsOptions,
+    // Los WebSocket no pasan por CORS: sin este control, otro sitio podría conectarse con la cookie
+    // de alguien que tiene la sesión abierta y leer las métricas. Solo se acepta el tablero.
+    allowRequest: (req, permitir) => permitir(null, origenesPermitidos.includes(req.headers.origin ?? '')),
+  })
   const ultimaHuella = new Map<DiasPeriodo, string>()
 
   // ---------- Solo se conecta quien tiene sesión iniciada (cookie) ----------
