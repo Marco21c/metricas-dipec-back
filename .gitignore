@@ -1,0 +1,8 @@
+node_modules/
+dist/
+
+# Configuración y secretos: nunca se suben al repositorio
+.env
+.env.local
+*-service-account*.json
+*.key.json

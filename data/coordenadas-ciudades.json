@@ -1,0 +1,275 @@
+{
+  "buenos aires|buenos aires|argentina": {
+    "lat": -34.6095579,
+    "lng": -58.3887904
+  },
+  "urumqi|xinjiang|china": {
+    "lat": 43.8244074,
+    "lng": 87.6139038
+  },
+  "parana|entre rios province|argentina": {
+    "lat": -31.7330145,
+    "lng": -60.5298511
+  },
+  "ashburn|virginia|united states": {
+    "lat": 39.0437192,
+    "lng": -77.4874899
+  },
+  "caseros|buenos aires province|argentina": {
+    "lat": -34.607366,
+    "lng": -58.5661311
+  },
+  "la plata|buenos aires province|argentina": {
+    "lat": -34.9206797,
+    "lng": -57.9537638
+  },
+  "neuquen|neuquen province|argentina": {
+    "lat": -38.9519679,
+    "lng": -68.0591741
+  },
+  "bahia blanca|buenos aires province|argentina": {
+    "lat": -38.7176522,
+    "lng": -62.2654871
+  },
+  "san martin|buenos aires province|argentina": {
+    "lat": -34.5771577,
+    "lng": -58.5377237
+  },
+  "bella vista|buenos aires province|argentina": {
+    "lat": -34.5684085,
+    "lng": -58.6894883
+  },
+  "mar del plata|buenos aires province|argentina": {
+    "lat": -37.9976168,
+    "lng": -57.5482079
+  },
+  "merlo|buenos aires province|argentina": {
+    "lat": -34.6604988,
+    "lng": -58.7321695
+  },
+  "manassas|virginia|united states": {
+    "lat": 38.7509488,
+    "lng": -77.4752667
+  },
+  "rio grande|tierra del fuego province|argentina": {
+    "lat": -53.7858275,
+    "lng": -67.7018562
+  },
+  "santiago|santiago metropolitan region|chile": {
+    "lat": -33.4376995,
+    "lng": -70.6510671
+  },
+  "munro|buenos aires province|argentina": {
+    "lat": -34.5296066,
+    "lng": -58.5220231
+  },
+  "new york|new york|united states": {
+    "lat": 40.7127281,
+    "lng": -74.0060152
+  },
+  "olivos|buenos aires province|argentina": {
+    "lat": -34.5110708,
+    "lng": -58.4901197
+  },
+  "san miguel|buenos aires province|argentina": {
+    "lat": -34.543006,
+    "lng": -58.711966
+  },
+  "cutral co|neuquen province|argentina": {
+    "lat": -38.9378831,
+    "lng": -69.2293743
+  },
+  "dublin|county dublin|ireland": {
+    "lat": 53.3493795,
+    "lng": -6.2605593
+  },
+  "flint hill|virginia|united states": {
+    "lat": 36.7954163,
+    "lng": -79.4941946
+  },
+  "ituzaingo|buenos aires province|argentina": {
+    "lat": -34.6583293,
+    "lng": -58.6671441
+  },
+  "mexico city|mexico city|mexico": {
+    "lat": 19.4326296,
+    "lng": -99.1331785
+  },
+  "lanus|buenos aires province|argentina": {
+    "lat": -34.703104,
+    "lng": -58.395347
+  },
+  "catamarca|catamarca province|argentina": {
+    "lat": -36.7667003,
+    "lng": -59.8489095
+  },
+  "gerli|buenos aires province|argentina": {
+    "lat": -34.6915746,
+    "lng": -58.3836222
+  },
+  "vicente lopez|buenos aires province|argentina": {
+    "lat": -34.525763,
+    "lng": -58.4748977
+  },
+  "san salvador de jujuy|jujuy province|argentina": {
+    "lat": -24.1852569,
+    "lng": -65.2994789
+  },
+  "salta|salta province|argentina": {
+    "lat": -24.7892946,
+    "lng": -65.4103194
+  },
+  "palpala|jujuy province|argentina": {
+    "lat": -24.2554935,
+    "lng": -65.2093985
+  },
+  "san miguel de tucuman|tucuman province|argentina": {
+    "lat": -26.8303703,
+    "lng": -65.2038133
+  },
+  "libertador general san martin|jujuy province|argentina": {
+    "lat": -23.8093358,
+    "lng": -64.7921741
+  },
+  "cordoba|cordoba province|argentina": {
+    "lat": -31.4166867,
+    "lng": -64.1834193
+  },
+  "santa fe|santa fe province|argentina": {
+    "lat": -31.6474914,
+    "lng": -60.6428557
+  },
+  "rosario|santa fe province|argentina": {
+    "lat": -32.9593609,
+    "lng": -60.6617024
+  },
+  "ushuaia|tierra del fuego province|argentina": {
+    "lat": -54.807306,
+    "lng": -68.3084133
+  },
+  "santa rosa|la pampa province|argentina": {
+    "lat": -36.6203503,
+    "lng": -64.2905765
+  },
+  "corrientes|corrientes province|argentina": {
+    "lat": -27.4818684,
+    "lng": -58.7955872
+  },
+  "la rioja|la rioja province|argentina": {
+    "lat": -29.4127411,
+    "lng": -66.8558795
+  },
+  "villa maria|cordoba province|argentina": {
+    "lat": -32.4106245,
+    "lng": -63.2435809
+  },
+  "la quiaca|jujuy province|argentina": {
+    "lat": -22.1044609,
+    "lng": -65.5966941
+  },
+  "godoy cruz|mendoza province|argentina": {
+    "lat": -32.925302,
+    "lng": -68.8443678
+  },
+  "ciudad perico|jujuy province|argentina": {
+    "lat": -24.3761853,
+    "lng": -65.1181555
+  },
+  "brisbane|queensland|australia": {
+    "lat": -27.4689623,
+    "lng": 153.0235009
+  },
+  "el palomar|buenos aires province|argentina": {
+    "lat": -34.6225227,
+    "lng": -58.595568
+  },
+  "isidro casanova|buenos aires province|argentina": {
+    "lat": -34.7036939,
+    "lng": -58.586236
+  },
+  "mumbai|maharashtra|india": {
+    "lat": 19.054999,
+    "lng": 72.8692035
+  },
+  "rafael castillo|buenos aires province|argentina": {
+    "lat": -34.6996518,
+    "lng": -58.6308765
+  },
+  "san miguel del monte|buenos aires province|argentina": {
+    "lat": -35.4410152,
+    "lng": -58.8035154
+  },
+  "barcelona|catalonia|spain": {
+    "lat": 41.3825802,
+    "lng": 2.177073
+  },
+  "florencio varela|buenos aires province|argentina": {
+    "lat": -34.8044384,
+    "lng": -58.2783224
+  },
+  "gonzalez catan|buenos aires province|argentina": {
+    "lat": -34.769249,
+    "lng": -58.6480318
+  },
+  "quilmes oeste|buenos aires province|argentina": {
+    "lat": -34.7461418,
+    "lng": -58.287826
+  },
+  "san jose|buenos aires province|argentina": {
+    "lat": -34.7540252,
+    "lng": -58.3540105
+  },
+  "villa del rosario|cordoba province|argentina": {
+    "lat": -31.5540883,
+    "lng": -63.5352431
+  },
+  "san juan|san juan province|argentina": {
+    "lat": -31.5370909,
+    "lng": -68.5251802
+  },
+  "mendoza|mendoza province|argentina": {
+    "lat": -32.8894155,
+    "lng": -68.8446177
+  },
+  "resistencia|chaco province|argentina": {
+    "lat": -27.6048829,
+    "lng": -59.1932003
+  },
+  "cambridge|massachusetts|united states": {
+    "lat": 42.3656347,
+    "lng": -71.1040018
+  },
+  "singapore|(not set)|singapore": {
+    "lat": 1.2899175,
+    "lng": 103.8519072
+  },
+  "posadas|misiones province|argentina": {
+    "lat": -27.3664824,
+    "lng": -55.894295
+  },
+  "lanzhou|gansu|china": {
+    "lat": 36.0526223,
+    "lng": 103.8394984
+  },
+  "moron|buenos aires province|argentina": {
+    "lat": -34.6510527,
+    "lng": -58.6217416
+  },
+  "santiago del estero|santiago del estero province|argentina": {
+    "lat": -27.7877148,
+    "lng": -64.2595062
+  },
+  "el carril|salta province|argentina": {
+    "lat": -25.0766368,
+    "lng": -65.4892251
+  },
+  "la carlota|cordoba province|argentina": {
+    "lat": -33.4179364,
+    "lng": -63.2934951
+  },
+  "san fernando|buenos aires province|argentina": {
+    "lat": -34.4471919,
+    "lng": -58.5701505
+  },
+  "29173|state of espirito santo|brazil": null
+}
