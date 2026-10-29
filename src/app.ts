@@ -4,6 +4,7 @@ import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import { corsOptions } from './config/cors'
+import authRoute from './routes/auth.route'
 import metricasRoute from './routes/metricas.route'
 import { manejadorDeErrores } from './utils/errores'
 
@@ -23,6 +24,7 @@ app.get('/salud', (_req, res) => {
   res.json({ ok: true, servicio: 'metricas-dipec-back' })
 })
 
+app.use(authRoute)
 app.use(metricasRoute)
 
 // Al final: errores que no atrapó ningún controlador

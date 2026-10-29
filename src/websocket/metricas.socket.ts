@@ -1,27 +1,17 @@
-// Tiempo real con WebSocket (socket.io).
-// El backend consulta a Google UNA vez por intervalo (para todos los que miran) y avisa
-// al instante a todas las pantallas abiertas. Solo se consultan los períodos que alguien está mirando.
-//
-// Mensajes que manda el tablero:
-//   "resumen:suscribir" (dias)  → empieza a recibir el resumen de ese período (7, 30, 90 o 365)
-//   "en-vivo:suscribir"         → empieza a recibir las personas activas
-// Mensajes que manda el backend:
-//   "resumen"             { dias, data }         datos nuevos (al suscribirse y cuando algo cambió)
-//   "resumen:sin-cambios" { dias, comprobado }   se consultó a Google y no hubo cambios
-//   "resumen:error"       { dias, message }
-//   "en-vivo"             data
-//   "en-vivo:error"       { message }
-
 import type { Server as HttpServer } from 'node:http'
 import { Server } from 'socket.io'
 import type { Socket } from 'socket.io'
+import { NOMBRE_COOKIE, leerCookie } from '../auth/jwt'
 import { corsOptions } from '../config/cors'
 import { PERIODOS_VALIDOS } from '../interfaces/metricas.interface'
 import type { DiasPeriodo, ResumenMetricas } from '../interfaces/metricas.interface'
 import { obtenerEnVivoService, obtenerResumenService, validarDias } from '../services/metricas.service'
+import { usuarioDeTokenService } from '../services/usuario.service'
 
 const INTERVALO_RESUMEN = 60 * 1000 // 1 minuto
 const INTERVALO_EN_VIVO = 30 * 1000 // 30 segundos
+// Cada cuánto se vuelve a comprobar que la sesión siga valiendo (usuario desactivado, contraseña cambiada)
+const REVISAR_SESION = 5 * 60 * 1000
 
 const salaResumen = (dias: DiasPeriodo) => `resumen:${dias}`
 const SALA_EN_VIVO = 'en-vivo'
@@ -37,8 +27,40 @@ export function iniciarWebSocket(servidor: HttpServer) {
   const io = new Server(servidor, { cors: corsOptions })
   const ultimaHuella = new Map<DiasPeriodo, string>()
 
+  // ---------- Solo se conecta quien tiene sesión iniciada (cookie) ----------
+  // Si no, el tablero recibe el error "sesion" y vuelve a la pantalla de ingreso.
+  io.use(async (socket, next) => {
+    const token = leerCookie(socket.handshake.headers.cookie, NOMBRE_COOKIE)
+    try {
+      const sesion = await usuarioDeTokenService(token)
+      if (!sesion) return next(new Error('sesion'))
+      socket.data = { token, vence: sesion.vence }
+      next()
+    } catch {
+      next(new Error('servidor')) // por ejemplo, la base de datos no responde: el tablero reintenta
+    }
+  })
+
   // ---------- Conexión de cada pantalla ----------
   io.on('connection', (socket: Socket) => {
+    // Cuando vence la sesión (o deja de valer) se avisa y se corta el tiempo real
+    const terminarSesion = () => {
+      socket.emit('sesion:vencida')
+      socket.disconnect(true)
+    }
+    const vencimiento = setTimeout(terminarSesion, Math.max(0, socket.data.vence - Date.now()))
+    const revision = setInterval(() => {
+      usuarioDeTokenService(socket.data.token)
+        .then((sesion) => {
+          if (!sesion) terminarSesion()
+        })
+        .catch(() => {}) // si la base no responde, se mantiene la conexión
+    }, REVISAR_SESION)
+    socket.on('disconnect', () => {
+      clearTimeout(vencimiento)
+      clearInterval(revision)
+    })
+
     socket.on('resumen:suscribir', async (valor: unknown) => {
       let dias: DiasPeriodo
       try {

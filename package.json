@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node --env-file .env dist/index.js",
     "typecheck": "tsc --noEmit",
-    "cargar-credenciales": "tsx scripts/cargar-credenciales.ts"
+    "cargar-credenciales": "tsx scripts/cargar-credenciales.ts",
+    "usuarios": "tsx --env-file .env scripts/usuarios.ts"
   },
   "keywords": [],
   "author": "",

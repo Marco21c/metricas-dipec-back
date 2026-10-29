@@ -1,0 +1,32 @@
+# Base de datos para desarrollo local (usuarios del tablero).
+#   Levantar:  docker compose up -d
+#   Apagar:    docker compose down        (los datos se conservan en el volumen)
+#   Borrar todo, datos incluidos: docker compose down -v
+#
+# En el .env:
+#   DATABASE_URL=postgres://metricas:metricas_local@localhost:5432/metricas_dipec
+
+name: metricas-dipec
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: metricas-dipec-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: metricas
+      POSTGRES_PASSWORD: metricas_local
+      POSTGRES_DB: metricas_dipec
+      TZ: America/Argentina/Jujuy
+    ports:
+      - '127.0.0.1:5432:5432' # solo accesible desde esta computadora
+    volumes:
+      - datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U metricas -d metricas_dipec']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  datos:
