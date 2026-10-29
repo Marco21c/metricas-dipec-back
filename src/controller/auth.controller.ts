@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 import { NOMBRE_COOKIE, firmarToken, opcionesCookie } from '../auth/jwt'
-import { usuarioDe } from '../auth/middleware'
-import { datosDeSesion, validarCredencialesService } from '../services/usuario.service'
+import { datosDeSesion, usuarioDeTokenService, validarCredencialesService } from '../services/usuario.service'
 import { responderError } from '../utils/errores'
 
 // POST /auth/login { username, password } → cookie de sesión + datos del usuario
@@ -27,7 +26,14 @@ export const logout = (_req: Request, res: Response): void => {
   res.json({ ok: true })
 }
 
-// GET /auth/me → usuario de la sesión (el tablero no puede leer la cookie)
-export const me = (_req: Request, res: Response): void => {
-  res.json({ ok: true, data: usuarioDe(res) })
+// GET /auth/me → usuario de la sesión, o null si no hay (el tablero no puede leer la cookie).
+// "Sin sesión" es una respuesta normal (200), no un error: así la consola del navegador no
+// muestra un 401 cada vez que se abre la pantalla de ingreso.
+export const me = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const sesion = await usuarioDeTokenService(req.cookies?.[NOMBRE_COOKIE])
+    res.json({ ok: true, data: sesion?.usuario ?? null })
+  } catch (error) {
+    responderError(res, error, 'No se pudo comprobar la sesión')
+  }
 }
