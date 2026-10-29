@@ -36,4 +36,9 @@ export const sequelize = new Sequelize(env.databaseUrl || 'postgres://localhost:
   dialectModule: pg,
   logging: false,
   dialectOptions: opcionesSsl(),
+  // Conexiones sin uso se cierran pronto: la red (VPN, pooler de Supabase) suele cortarlas
+  // y reusarlas daba "ECONNRESET"
+  pool: { max: 5, min: 0, idle: 10_000, evict: 10_000, acquire: 20_000 },
+  // Si igual se corta una conexión, se reintenta la consulta antes de dar error
+  retry: { max: 3, match: [/ECONNRESET/, /ETIMEDOUT/, /EPIPE/, /Connection terminated/, /SequelizeConnectionError/] },
 })

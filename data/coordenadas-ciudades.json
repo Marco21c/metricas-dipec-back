@@ -271,5 +271,17 @@
     "lat": -34.4471919,
     "lng": -58.5701505
   },
-  "29173|state of espirito santo|brazil": null
+  "29173|state of espirito santo|brazil": null,
+  "rocklin|california|united states": {
+    "lat": 38.7907339,
+    "lng": -121.2357828
+  },
+  "jose c. paz|buenos aires province|argentina": {
+    "lat": -34.511906,
+    "lng": -58.7776777
+  },
+  "libertad|buenos aires province|argentina": {
+    "lat": -34.7003704,
+    "lng": -58.6834869
+  }
 }
