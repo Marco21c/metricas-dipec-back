@@ -29,5 +29,11 @@ export const manejadorDeErrores: ErrorRequestHandler = (error, _req, res, next) 
     next(error)
     return
   }
+  // Pedido mal armado (JSON inválido, cuerpo demasiado grande): es un error de quien lo envía, no del servidor
+  const status = typeof error?.status === 'number' ? error.status : 0
+  if (status >= 400 && status < 500) {
+    res.status(status).json({ ok: false, message: 'Pedido inválido' })
+    return
+  }
   responderError(res, error)
 }

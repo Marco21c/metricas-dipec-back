@@ -292,5 +292,10 @@
   "jose leon suarez|buenos aires province|argentina": {
     "lat": -34.5283329,
     "lng": -58.5771687
-  }
+  },
+  "bosques|buenos aires province|argentina": {
+    "lat": -34.8201576,
+    "lng": -58.2305047
+  },
+  "kashgar prefecture|xinjiang|china": null
 }

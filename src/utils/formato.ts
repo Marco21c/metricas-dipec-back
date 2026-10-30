@@ -32,14 +32,28 @@ export function limpiarTituloPagina(titulo: string, ruta = '') {
   return limpio || titulo.trim()
 }
 
+// ¿La dirección es del sitio de la DiPEC (o de un subdominio)?
+function esDelSitio(url: string) {
+  try {
+    const sitio = new URL(env.wordpressUrl).hostname.replace(/^www\./, '')
+    const host = new URL(url).hostname.replace(/^www\./, '')
+    return host === sitio || host.endsWith(`.${sitio}`)
+  } catch {
+    return false
+  }
+}
+
 // Datos de un archivo a partir de su dirección:
 // "dipec.jujuy.gob.ar/download/262/mapas/5969/mapa-fisico-de-jujuy.pdf"
 //   → { nombre: "Mapa fisico de jujuy", formato: "pdf", url: "https://dipec.jujuy.gob.ar/download/…" }
 export function datosArchivo(direccion: string) {
-  const url = /^https?:\/\//.test(direccion) ? direccion : `https://${direccion.replace(/^\/+/, '')}`
+  const completa = /^https?:\/\//.test(direccion) ? direccion : `https://${direccion.replace(/^\/+/, '')}`
+  // A Google Analytics cualquiera le puede mandar datos falsos: solo se enlazan archivos del sitio,
+  // así el tablero nunca muestra un enlace a otro dominio (los demás se listan sin enlace)
+  const url = esDelSitio(completa) ? completa : ''
   let archivo = direccion
   try {
-    archivo = decodeURIComponent(new URL(url).pathname.split('/').filter(Boolean).pop() ?? direccion)
+    archivo = decodeURIComponent(new URL(completa).pathname.split('/').filter(Boolean).pop() ?? direccion)
   } catch {
     /* se usa el texto tal cual */
   }

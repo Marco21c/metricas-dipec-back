@@ -32,7 +32,3 @@ export function conCache<T>(clave: string, duracionMs: number, obtener: () => Pr
   entradas.set(clave, { vence: Date.now() + duracionMs, valor })
   return valor
 }
-
-export function vaciarCache(prefijo = '') {
-  for (const clave of entradas.keys()) if (clave.startsWith(prefijo)) entradas.delete(clave)
-}

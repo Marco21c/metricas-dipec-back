@@ -250,8 +250,9 @@ function armarArchivos(filas: FilaGA[]) {
   for (const f of filas) {
     if (!f.dims[0] || f.dims[0] === '(not set)') continue
     const datos = datosArchivo(f.dims[0])
-    const previo = porUrl.get(datos.url)
-    porUrl.set(datos.url, { ...datos, descargas: (previo?.descargas ?? 0) + f.mets[0] })
+    const clave = datos.url || f.dims[0] // los archivos sin enlace se juntan por su dirección original
+    const previo = porUrl.get(clave)
+    porUrl.set(clave, { ...datos, descargas: (previo?.descargas ?? 0) + f.mets[0] })
   }
   return [...porUrl.values()].sort((a, b) => b.descargas - a.descargas).slice(0, CANTIDAD_TOP)
 }
